@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fancy Text Generator</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, textarea { width: 100%; margin: 10px 0; padding: 10px; font-size: 18px; }
+    .fancy { font-size: 22px; margin: 10px 0; }
+    button { padding: 10px 20px; margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Fancy Text Generator</h2>
+  <input type="text" id="input" placeholder="Type here...">
+  <div class="fancy" id="fancy1"></div>
+  <div class="fancy" id="fancy2"></div>
+  <div class="fancy" id="fancy3"></div>
+  <div class="fancy" id="fancy4"></div>
+  <div class="fancy" id="fancy5"></div>
+  <button onclick="copyText('fancy1')">Copy Fancy 1</button>
+  <button onclick="copyText('fancy2')">Copy Fancy 2</button>
+  <button onclick="copyText('fancy3')">Copy Fancy 3</button>
+  <button onclick="copyText('fancy4')">Copy Fancy 4</button>
+  <button onclick="copyText('fancy5')">Copy Fancy 5</button>
+
+  <script>
+    const input = document.getElementById('input');
+    const f1 = document.getElementById('fancy1');
+    const f2 = document.getElementById('fancy2');
+    const f3 = document.getElementById('fancy3');
+    const f4 = document.getElementById('fancy4');
+    const f5 = document.getElementById('fancy5');
+
+    input.addEventListener('input', () => {
+      const val = input.value;
+      f1.textContent = transform(val, '𝐀');
+      f2.textContent = val.split('').map(c => c + '✨').join('');
+      f3.textContent = transform(val, '𝓐');
+      f4.textContent = transform(val, '𝔄');
+      f5.textContent = val.split('').map(bubbleChar).join('');
+    });
+
+    function copyText(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text);
+      alert('Copied: ' + text);
+    }
+
+    function transform(text, baseChar) {
+      const base = baseChar.codePointAt(0);
+      return text.split('').map(c => {
+        const code = c.toUpperCase().charCodeAt(0);
+        if (code >= 65 && code <= 90) {
+          return String.fromCodePoint(base + (code - 65));
+        }
+        return c;
+      }).join('');
+    }
+
+    function bubbleChar(c) {
+      const offset = c.toLowerCase().charCodeAt(0) - 97;
+      if (offset >= 0 && offset < 26) return String.fromCodePoint(0x24D0 + offset);
+      return c;
+    }
+  </script>
+</body>
+</html>
